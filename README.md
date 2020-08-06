@@ -1,68 +1,50 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.<br />
+Runs the client (React) app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### `npm run server`
 
-### `npm test`
+Runs the API (Node) server.<br />
+The API server runs on port 3030 and I configured the React app to proxy any unknown requests to the API server.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Write-Up
 
-### `npm run build`
+### Client App
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### React UI Library
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+* I have had limited exposure to and experience with Vue. I opted to implement React because I felt I could more adeptly demonstrate my skills.
+* Earlier versions of React used class-based components to manage local state. I opted to utilize the useState Hook, a feature implemented in more recent versions, for state management. In my opinion, useState simplifies and reduces code making it more readable. Of note, class-based components contain state within one object whereas useState allows for individual state variables. The advantage to the latter is that it reduces the number of re-renderings, which are triggered by a change in state, precisely because the state isn't encompassed within one object.
+* I created 3 components, each representing different sections of the app, i.e. the web form, the business card, and the salary adjustments. The Form component is a parent component to the Card and Salary components. Because of React's unidirectional data flow approach, I felt it more logical to make the API request in the Form component and pass the resulting data to the child components. I'll mention here that I feel, time allowing, it would have been beneficial to create a fourth component that encapsulated each form input to better adhere to the DRY concept.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Design & Layout
 
-### `npm run eject`
+* To achieve the page layout I used Flexbox. I find it to be a quick and efficient way of creating the layout. Flexbox also lays the foundation to incorporate responsive design in the future. Had I been designing a publicly hosted application I would have begun with a mobile-first design approach.
+* To make things more fun I added a touch of color. The darker blue is the same blue that is part of the Henry Schein logo and the other blues are variations of it.
+* The business card template doesn't show any information originally doesn't include any information about the employee's employment status. To make more dynamic use of this boolean value I designed the business card to show 'former employee of' or 'current employee of' depending on whether the checkbox is checked or not. Because of that decision, I also chose to only render that data if a user provides a company name. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### Other Future Considerations
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Other considerations include validation (especially of the phone field) and normalization for the other form fields as well as determining which fields are optional and which are required. It would also be nice to see live validation. I only provided validation upon form submission. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### API Server
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Express
 
-## Learn More
+* I used the express framework for node.js. It's one of the more popular frameworks and it is the framework I'm most familiar with.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### RESTful API
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Commonly used and I appreciate its HTTP request methods. Express makes setting up the routing endpoints simple and I also implemented the use of controllers. I wans't really necessary for an application of this size but it certainly helps with larger and more complex applications.
+* I've come across differing opinions regarding naming conventions regarding enpoints, most often kebab case vs snake case. I opted to use kebab case as it seems to be more commonly recommended. 
 
-### Code Splitting
+#### Security, Databases, & Other Considerations
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* Data security and privacy would need to be addressed. Common practices of authorizing and granting privileges to certain users should be implemented in this application. The employee's data is sensitive and needs to be protected. 
+* Other security considerations would come of the database choice, NoSQL vs SQL, as well as DBMS. SQL injection is often a security concern though the ORMs that I've worked with have measures is place to protect against it.
+* Backend validation is another process that could be implemented to increase security.
